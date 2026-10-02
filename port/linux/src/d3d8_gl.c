@@ -74,6 +74,10 @@ frames, after one is presented (halo_screen_commit). */
 
 #define SCREEN_HEIGHT 480
 #define SCREEN_MAXIMUM_WIDTH 1920
+/* the game's secondary target, which a mirror's reflection is drawn into
+(render.c render_window, rasterizer_xbox.c), and its depth buffer */
+#define MIRROR_TARGET_WIDTH 320
+#define MIRROR_TARGET_HEIGHT 240
 
 /* the width the game draws, 0 until first asked, and how many pixels a
 render target the size of the screen has per unit of it */
@@ -768,6 +772,17 @@ static struct render_target_entry *render_target_get(const D3DSurface *surface)
 	{
 		scale[0] = screen_scale[0];
 		scale[1] = screen_scale[1];
+	}
+	/* A mirror's reflection is the whole view drawn again, mirrored, into the
+	320x240 secondary target, then laid over the mirror's surface. That was
+	half the Xbox's 640x480; on a large screen its pixels showed as jagged
+	steps across the reflection. The target is drawn as densely as the
+	screen's targets instead (the game's viewports and clears in its 320x240
+	units scale up with it, and the reflection is read in those units). */
+	else if (width == MIRROR_TARGET_WIDTH && height == MIRROR_TARGET_HEIGHT)
+	{
+		scale[0] = screen_scale[0] * (float)halo_screen_width() / MIRROR_TARGET_WIDTH;
+		scale[1] = screen_scale[1] * (float)SCREEN_HEIGHT / MIRROR_TARGET_HEIGHT;
 	}
 	for (entry = *render_target_bucket(surface->Data); entry; entry = entry->next_in_bucket)
 	{
