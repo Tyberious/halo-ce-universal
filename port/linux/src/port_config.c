@@ -97,6 +97,10 @@ static const struct config_setting config_settings[] =
 	{ "display.player_name_scale", _config_real, "1.0", "HALO_PLAYER_NAME_SCALE", _environment_value, _platform_all,
 		"How large the players' names are drawn: 1.0 the size of the HUD's text,\n"
 		"0.25 to 4." },
+	{ "display.high_res_mirrors", _config_boolean, "false", "HALO_HIGH_RES_MIRRORS", _environment_value,
+		_platform_all,
+		"Draw mirrors' reflections (shiny floors) at the screen's resolution;\n"
+		"false draws them at the Xbox's 320x240, jagged on a large screen." },
 
 	{ "audio.enabled", _config_boolean, "true", "HALO_NO_AUDIO", _environment_set_is_false, _platform_all,
 		"Play sound." },
