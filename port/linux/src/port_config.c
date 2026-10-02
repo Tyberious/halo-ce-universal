@@ -109,6 +109,11 @@ static const struct config_setting config_settings[] =
 		"The size the objects' shadows are drawn at, in pixels each way: 256,\n"
 		"512, 1024 or 2048 keep their edges smooth; 128 draws them as the Xbox\n"
 		"does, blocky on a large screen." },
+	{ "display.per_pixel_lighting", _config_boolean, "true", "HALO_PER_PIXEL_LIGHTING", _environment_value,
+		_platform_all,
+		"Light the models (characters, weapons, vehicles, scenery) for each\n"
+		"pixel from the same lights the game gives them; false lights each\n"
+		"vertex, as the Xbox does, in facets across curved surfaces." },
 
 	{ "audio.enabled", _config_boolean, "true", "HALO_NO_AUDIO", _environment_set_is_false, _platform_all,
 		"Play sound." },
