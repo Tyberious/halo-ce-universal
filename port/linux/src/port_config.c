@@ -114,6 +114,10 @@ static const struct config_setting config_settings[] =
 		"Light the models (characters, weapons, vehicles, scenery) for each\n"
 		"pixel from the same lights the game gives them; false lights each\n"
 		"vertex, as the Xbox does, in facets across curved surfaces." },
+	{ "display.high_res_mirrors", _config_boolean, "false", "HALO_HIGH_RES_MIRRORS", _environment_value,
+		_platform_all,
+		"Draw mirrors' reflections (shiny floors) at the screen's resolution;\n"
+		"false draws them at the Xbox's 320x240, jagged on a large screen." },
 
 	{ "audio.enabled", _config_boolean, "true", "HALO_NO_AUDIO", _environment_set_is_false, _platform_all,
 		"Play sound." },

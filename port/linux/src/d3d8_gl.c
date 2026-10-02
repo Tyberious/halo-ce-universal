@@ -358,6 +358,9 @@ struct gl_device
 	/* display.per_pixel_lighting: the model lighting programs' draws are lit
 	for each pixel (nv2a_psh.c model_lighting) */
 	BOOL per_pixel_lighting;
+	/* display.high_res_mirrors: mirrors' reflections drawn at the screen's
+	resolution (render_target_get) */
+	BOOL high_res_mirrors;
 
 	GLuint queries[VISIBILITY_TEST_SLOTS];
 	BOOL query_pending[VISIBILITY_TEST_SLOTS];
@@ -801,10 +804,11 @@ static struct render_target_entry *render_target_get(const D3DSurface *surface)
 	/* A mirror's reflection is the whole view drawn again, mirrored, into the
 	320x240 secondary target, then laid over the mirror's surface. That was
 	half the Xbox's 640x480; on a large screen its pixels showed as jagged
-	steps across the reflection. The target is drawn as densely as the
-	screen's targets instead (the game's viewports and clears in its 320x240
-	units scale up with it, and the reflection is read in those units). */
-	else if (width == MIRROR_TARGET_WIDTH && height == MIRROR_TARGET_HEIGHT)
+	steps across the reflection. With display.high_res_mirrors the target is
+	drawn as densely as the screen's targets instead (the game's viewports and
+	clears in its 320x240 units scale up with it, and the reflection is read
+	in those units). */
+	else if (device.high_res_mirrors && width == MIRROR_TARGET_WIDTH && height == MIRROR_TARGET_HEIGHT)
 	{
 		scale[0] = screen_scale[0] * (float)halo_screen_width() / MIRROR_TARGET_WIDTH;
 		scale[1] = screen_scale[1] * (float)SCREEN_HEIGHT / MIRROR_TARGET_HEIGHT;
@@ -988,6 +992,7 @@ static void gl_initialize(void)
 #endif
 	shadow_resolution_initialize();
 	device.per_pixel_lighting = config_boolean("display.per_pixel_lighting");
+	device.high_res_mirrors = config_boolean("display.high_res_mirrors");
 	glGenVertexArrays(1, &device.vertex_array);
 	glBindVertexArray(device.vertex_array);
 #ifdef HALO_ANDROID
